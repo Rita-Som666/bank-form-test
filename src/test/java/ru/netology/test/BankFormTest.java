@@ -126,12 +126,43 @@ public class BankFormTest {
         driver.get("http://localhost:9999/");
         List<WebElement> elements = driver.findElements(By.className("input__control"));
         elements.get(0).sendKeys("Иван Иванов");
-        elements.get(1).sendKeys("0000");
+        elements.get(1).sendKeys("+800000000000");
         driver.findElement(By.className("button_view_extra")).click();
 
         String text = driver.findElement(By.cssSelector(".input_invalid[data-test-id='phone'] .input__sub")).getText();
         Assertions.assertEquals
                 ("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.",
                         text.trim());
+        driver.navigate().refresh();
+        elements = driver.findElements(By.className("input__control"));
+        elements.get(0).sendKeys("Иван Иванов");
+        elements.get(1).sendKeys("+8000000000");
+        driver.findElement(By.className("button_view_extra")).click();
+
+        text = driver.findElement(By.cssSelector(".input_invalid[data-test-id='phone'] .input__sub")).getText();
+        Assertions.assertEquals
+                ("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.",
+                        text.trim());
+        driver.navigate().refresh();
+        elements = driver.findElements(By.className("input__control"));
+        elements.get(0).sendKeys("Иван Иванов");
+        elements.get(1).sendKeys("80000000000");
+        driver.findElement(By.className("button_view_extra")).click();
+
+        text = driver.findElement(By.cssSelector(".input_invalid[data-test-id='phone'] .input__sub")).getText();
+        Assertions.assertEquals
+                ("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.",
+                        text.trim());
+        driver.navigate().refresh();
+    }
+
+    @Test
+    void notShouldSuccessSendFormWithoutAgreement(){
+        driver.get("http://localhost:9999/");
+        List<WebElement> elements = driver.findElements(By.className("input__control"));
+        elements.get(0).sendKeys("Иван Иванов");
+        elements.get(1).sendKeys("+79160000000");
+        driver.findElement(By.className("button_view_extra")).click();
+        driver.findElement(By.cssSelector(".input_invalid[data-test-id=\"agreement\"]"));
     }
 }
