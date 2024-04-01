@@ -35,44 +35,50 @@ public class BankFormTest {
     }
 
     @Test
-    void shouldSuccessSendFormAndFieldNamePositiveValidation() {
+    void shouldSuccessSendForm() {
         driver.get("http://localhost:9999/");
-        List<WebElement> elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("Иван Иванов");
-        elements.get(1).sendKeys("+79160000000");
+        driver.findElement(By.cssSelector("[data-test-id='name'] .input__control")).sendKeys("Иван Иванов");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] .input__control")).sendKeys("+79160000000");
         driver.findElement(By.cssSelector("[data-test-id=\"agreement\"]")).click();
         driver.findElement(By.className("button_view_extra")).click();
         String text = driver.findElement(By.cssSelector
                 ("[data-test-id=\"order-success\"]")).getText();
         Assertions.assertEquals("Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.",
                 text.trim());
-        driver.navigate().refresh();
-        elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("Иван-Иванов");
-        elements.get(1).sendKeys("+79160000000");
+    }
+    @Test
+            void FieldNamePositiveValidation1() {
+        driver.get("http://localhost:9999/");
+        driver.findElement(By.cssSelector("[data-test-id='name'] .input__control")).sendKeys("Иван-Иванов");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] .input__control")).sendKeys("+79160000000");
         driver.findElement(By.cssSelector("[data-test-id=\"agreement\"]")).click();
         driver.findElement(By.className("button_view_extra")).click();
-        text = driver.findElement(By.cssSelector
+        String text = driver.findElement(By.cssSelector
                 ("[data-test-id=\"order-success\"]")).getText();
         Assertions.assertEquals("Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.",
                 text.trim());
-        driver.navigate().refresh();
-        elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("Иван");
-        elements.get(1).sendKeys("+79160000000");
+    }
+    @Test
+    void FieldNamePositiveValidation2() {
+        driver.get("http://localhost:9999/");
+        driver.findElement(By.cssSelector("[data-test-id='name'] .input__control")).sendKeys("Иван");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] .input__control")).sendKeys("+79160000000");
         driver.findElement(By.cssSelector("[data-test-id=\"agreement\"]")).click();
         driver.findElement(By.className("button_view_extra")).click();
-        text = driver.findElement(By.cssSelector
+        String text = driver.findElement(By.cssSelector
                 ("[data-test-id=\"order-success\"]")).getText();
         Assertions.assertEquals("Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.",
                 text.trim());
-        driver.navigate().refresh();
-        elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("Иван-Иванов Иванович");
-        elements.get(1).sendKeys("+79160000000");
+    }
+
+    @Test
+    void FieldNamePositiveValidation3(){
+        driver.get("http://localhost:9999/");
+        driver.findElement(By.cssSelector("[data-test-id='name'] .input__control")).sendKeys("Иван-Иванов Иванович");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] .input__control")).sendKeys("+79160000000");
         driver.findElement(By.cssSelector("[data-test-id=\"agreement\"]")).click();
         driver.findElement(By.className("button_view_extra")).click();
-        text = driver.findElement(By.cssSelector
+        String text = driver.findElement(By.cssSelector
                 ("[data-test-id=\"order-success\"]")).getText();
         Assertions.assertEquals("Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.",
                 text.trim());
@@ -80,40 +86,43 @@ public class BankFormTest {
     }
 
     @Test
-    void fieldNameNegativeValidation(){
+    void fieldNameNegativeValidation() {
         driver.get("http://localhost:9999/");
-        List<WebElement> elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("Ivan Ivanov");
+        driver.findElement(By.cssSelector("[data-test-id='name'] .input__control")).sendKeys("Ivan Ivanov");
         driver.findElement(By.className("button_view_extra")).click();
-        driver.findElement(By.cssSelector(".input_invalid[data-test-id=\"name\"]"));
-        String text = driver.findElement(By.className("input__sub")).getText();
-        Assertions.assertEquals
-                ("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.",
-                text.trim());
-        driver.navigate().refresh();
-        elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("Иван1");
-        driver.findElement(By.className("button_view_extra")).click();
-        driver.findElement(By.cssSelector(".input_invalid[data-test-id=\"name\"]"));
-        text = driver.findElement(By.className("input__sub")).getText();
+        String text = driver.findElement(By.cssSelector("[data-test-id='name'].input_invalid .input__sub")).getText();
         Assertions.assertEquals
                 ("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.",
                         text.trim());
-        driver.navigate().refresh();
-        elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("Иван.Иванов");
+    }
+
+    @Test
+    void fieldNameNegativeValidation2() {
+        driver.get("http://localhost:9999/");
+        driver.findElement(By.cssSelector("[data-test-id='name'] .input__control")).sendKeys("Иван1");
         driver.findElement(By.className("button_view_extra")).click();
-        driver.findElement(By.cssSelector(".input_invalid[data-test-id=\"name\"]"));
-        text = driver.findElement(By.className("input__sub")).getText();
+        String text = driver.findElement(By.cssSelector("[data-test-id='name'].input_invalid .input__sub")).getText();
         Assertions.assertEquals
                 ("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.",
                         text.trim());
-        driver.navigate().refresh();
-        elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("");
+    }
+    @Test
+    void fieldNameNegativeValidation3() {
+        driver.get("http://localhost:9999/");
+        driver.findElement(By.cssSelector("[data-test-id='name'] .input__control")).sendKeys("Иван.Иванов");
         driver.findElement(By.className("button_view_extra")).click();
-        driver.findElement(By.cssSelector(".input_invalid[data-test-id=\"name\"]"));
-        text = driver.findElement(By.className("input__sub")).getText();
+        String text = driver.findElement(By.cssSelector("[data-test-id='name'].input_invalid .input__sub")).getText();
+        Assertions.assertEquals
+                ("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.",
+                        text.trim());
+    }
+
+    @Test
+    void fieldNameNegativeValidation4(){
+        driver.get("http://localhost:9999/");
+        driver.findElement(By.cssSelector("[data-test-id='name'] .input__control")).sendKeys("");
+        driver.findElement(By.className("button_view_extra")).click();
+        String text = driver.findElement(By.cssSelector("[data-test-id='name'].input_invalid .input__sub")).getText();
         Assertions.assertEquals
                 ("Поле обязательно для заполнения",
                         text.trim());
@@ -124,32 +133,35 @@ public class BankFormTest {
     @Test
     void fieldPhoneNegativeValidation() {
         driver.get("http://localhost:9999/");
-        List<WebElement> elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("Иван Иванов");
-        elements.get(1).sendKeys("+800000000000");
+        driver.findElement(By.cssSelector("[data-test-id='name'] .input__control")).sendKeys("Иван Иванов");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] .input__control")).sendKeys("+800000000000");
+        driver.findElement(By.className("button_view_extra")).click();
+
+        String text = driver.findElement(By.cssSelector("[data-test-id='phone'].input_invalid .input__sub")).getText();
+        Assertions.assertEquals
+                ("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.",
+                        text.trim());
+        }
+    @Test
+    void fieldPhoneNegativeValidation2() {
+        driver.get("http://localhost:9999/");
+        driver.findElement(By.cssSelector("[data-test-id='name'] .input__control")).sendKeys("Иван Иванов");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] .input__control")).sendKeys("+8000000000");
         driver.findElement(By.className("button_view_extra")).click();
 
         String text = driver.findElement(By.cssSelector(".input_invalid[data-test-id='phone'] .input__sub")).getText();
         Assertions.assertEquals
                 ("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.",
                         text.trim());
-        driver.navigate().refresh();
-        elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("Иван Иванов");
-        elements.get(1).sendKeys("+8000000000");
+    }
+    @Test
+    void fieldPhoneNegativeValidation3() {
+        driver.get("http://localhost:9999/");
+        driver.findElement(By.cssSelector("[data-test-id='name'] .input__control")).sendKeys("Иван Иванов");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] .input__control")).sendKeys("80000000000");
         driver.findElement(By.className("button_view_extra")).click();
 
-        text = driver.findElement(By.cssSelector(".input_invalid[data-test-id='phone'] .input__sub")).getText();
-        Assertions.assertEquals
-                ("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.",
-                        text.trim());
-        driver.navigate().refresh();
-        elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("Иван Иванов");
-        elements.get(1).sendKeys("80000000000");
-        driver.findElement(By.className("button_view_extra")).click();
-
-        text = driver.findElement(By.cssSelector(".input_invalid[data-test-id='phone'] .input__sub")).getText();
+        String text = driver.findElement(By.cssSelector(".input_invalid[data-test-id='phone'] .input__sub")).getText();
         Assertions.assertEquals
                 ("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.",
                         text.trim());
@@ -159,9 +171,8 @@ public class BankFormTest {
     @Test
     void notShouldSuccessSendFormWithoutAgreement(){
         driver.get("http://localhost:9999/");
-        List<WebElement> elements = driver.findElements(By.className("input__control"));
-        elements.get(0).sendKeys("Иван Иванов");
-        elements.get(1).sendKeys("+79160000000");
+        driver.findElement(By.cssSelector("[data-test-id='name'] .input__control")).sendKeys("Иван Иванов");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] .input__control")).sendKeys("+79160000000");
         driver.findElement(By.className("button_view_extra")).click();
         driver.findElement(By.cssSelector(".input_invalid[data-test-id=\"agreement\"]"));
     }
