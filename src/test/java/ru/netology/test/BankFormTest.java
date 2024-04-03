@@ -8,7 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import java.util.List;
+
 
 
 public class BankFormTest {
@@ -35,7 +35,7 @@ public class BankFormTest {
     }
 
     @Test
-    void shouldSuccessSendForm() {
+    void shouldSuccessSendFormAndFieldNamePositiveValidationWithSpase() {
         driver.get("http://localhost:9999/");
         driver.findElement(By.cssSelector("[data-test-id='name'] .input__control")).sendKeys("Иван Иванов");
         driver.findElement(By.cssSelector("[data-test-id='phone'] .input__control")).sendKeys("+79160000000");
@@ -47,7 +47,7 @@ public class BankFormTest {
                 text.trim());
     }
     @Test
-            void FieldNamePositiveValidation1() {
+            void shouldSuccessSendFormAndFieldNamePositiveValidationWithHyphen() {
         driver.get("http://localhost:9999/");
         driver.findElement(By.cssSelector("[data-test-id='name'] .input__control")).sendKeys("Иван-Иванов");
         driver.findElement(By.cssSelector("[data-test-id='phone'] .input__control")).sendKeys("+79160000000");
@@ -59,7 +59,7 @@ public class BankFormTest {
                 text.trim());
     }
     @Test
-    void FieldNamePositiveValidation2() {
+    void shouldSuccessSendFormAndFieldNamePositiveValidationWithOutSpase() {
         driver.get("http://localhost:9999/");
         driver.findElement(By.cssSelector("[data-test-id='name'] .input__control")).sendKeys("Иван");
         driver.findElement(By.cssSelector("[data-test-id='phone'] .input__control")).sendKeys("+79160000000");
@@ -72,7 +72,7 @@ public class BankFormTest {
     }
 
     @Test
-    void FieldNamePositiveValidation3(){
+    void shouldSuccessSendFormAndFieldNamePositiveValidationWithSpaseAndHyphen(){
         driver.get("http://localhost:9999/");
         driver.findElement(By.cssSelector("[data-test-id='name'] .input__control")).sendKeys("Иван-Иванов Иванович");
         driver.findElement(By.cssSelector("[data-test-id='phone'] .input__control")).sendKeys("+79160000000");
@@ -86,7 +86,7 @@ public class BankFormTest {
     }
 
     @Test
-    void fieldNameNegativeValidation() {
+    void fieldNameNegativeValidationWithRoman() {
         driver.get("http://localhost:9999/");
         driver.findElement(By.cssSelector("[data-test-id='name'] .input__control")).sendKeys("Ivan Ivanov");
         driver.findElement(By.className("button_view_extra")).click();
@@ -97,7 +97,7 @@ public class BankFormTest {
     }
 
     @Test
-    void fieldNameNegativeValidation2() {
+    void fieldNameNegativeValidationWithDigit() {
         driver.get("http://localhost:9999/");
         driver.findElement(By.cssSelector("[data-test-id='name'] .input__control")).sendKeys("Иван1");
         driver.findElement(By.className("button_view_extra")).click();
@@ -107,7 +107,7 @@ public class BankFormTest {
                         text.trim());
     }
     @Test
-    void fieldNameNegativeValidation3() {
+    void fieldNameNegativeValidationWithSpecialSymbol() {
         driver.get("http://localhost:9999/");
         driver.findElement(By.cssSelector("[data-test-id='name'] .input__control")).sendKeys("Иван.Иванов");
         driver.findElement(By.className("button_view_extra")).click();
@@ -118,7 +118,7 @@ public class BankFormTest {
     }
 
     @Test
-    void fieldNameNegativeValidation4(){
+    void fieldNameNegativeValidationBlank(){
         driver.get("http://localhost:9999/");
         driver.findElement(By.cssSelector("[data-test-id='name'] .input__control")).sendKeys("");
         driver.findElement(By.className("button_view_extra")).click();
@@ -131,7 +131,7 @@ public class BankFormTest {
     }
 
     @Test
-    void fieldPhoneNegativeValidation() {
+    void fieldPhoneNegativeValidation12Digits() {
         driver.get("http://localhost:9999/");
         driver.findElement(By.cssSelector("[data-test-id='name'] .input__control")).sendKeys("Иван Иванов");
         driver.findElement(By.cssSelector("[data-test-id='phone'] .input__control")).sendKeys("+800000000000");
@@ -143,7 +143,7 @@ public class BankFormTest {
                         text.trim());
         }
     @Test
-    void fieldPhoneNegativeValidation2() {
+    void fieldPhoneNegativeValidation10Digits() {
         driver.get("http://localhost:9999/");
         driver.findElement(By.cssSelector("[data-test-id='name'] .input__control")).sendKeys("Иван Иванов");
         driver.findElement(By.cssSelector("[data-test-id='phone'] .input__control")).sendKeys("+8000000000");
@@ -155,7 +155,7 @@ public class BankFormTest {
                         text.trim());
     }
     @Test
-    void fieldPhoneNegativeValidation3() {
+    void fieldPhoneNegativeValidationWithOutPlus() {
         driver.get("http://localhost:9999/");
         driver.findElement(By.cssSelector("[data-test-id='name'] .input__control")).sendKeys("Иван Иванов");
         driver.findElement(By.cssSelector("[data-test-id='phone'] .input__control")).sendKeys("80000000000");
@@ -169,11 +169,27 @@ public class BankFormTest {
     }
 
     @Test
+    void fieldPhoneNegativeValidationBlank() {
+        driver.get("http://localhost:9999/");
+        driver.findElement(By.cssSelector("[data-test-id='name'] .input__control")).sendKeys("Иван Иванов");
+        driver.findElement(By.cssSelector("[data-test-id='phone'] .input__control")).sendKeys("");
+        driver.findElement(By.className("button_view_extra")).click();
+
+        String text = driver.findElement(By.cssSelector(".input_invalid[data-test-id='phone'] .input__sub")).getText();
+        Assertions.assertEquals
+                ("Поле обязательно для заполнения",
+                        text.trim());
+        driver.navigate().refresh();
+    }
+
+    @Test
     void notShouldSuccessSendFormWithoutAgreement(){
         driver.get("http://localhost:9999/");
         driver.findElement(By.cssSelector("[data-test-id='name'] .input__control")).sendKeys("Иван Иванов");
         driver.findElement(By.cssSelector("[data-test-id='phone'] .input__control")).sendKeys("+79160000000");
         driver.findElement(By.className("button_view_extra")).click();
-        driver.findElement(By.cssSelector(".input_invalid[data-test-id=\"agreement\"]"));
+        WebElement invalidElement = driver.findElement(By.cssSelector(".input_invalid[data-test-id=\"agreement\"]"));
+        boolean expected =  invalidElement.isDisplayed();
+        Assertions.assertTrue(expected);
     }
 }
